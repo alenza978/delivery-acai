@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Açaí Premium - Finalizar Pedido</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #8B3A9C, #4A1A4A);
+            min-height: 100vh;
+        }
+
+        .header-banner {
+            background: linear-gradient(45deg, #8B3A9C, #6B2C7A);
+            color: white;
+            text-align: center;
+            padding: 8px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .main-banner {
+            background: linear-gradient(135deg, #8B3A9C, #4A1A4A);
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .main-banner::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -20px;
+            width: 100px;
+            height: 200%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="30" fill="%23ff6b6b" opacity="0.3"/></svg>');
+            transform: rotate(-15deg);
+        }
+
+        .main-banner::after {
+            content: '';
+            position: absolute;
+            top: -30%;
+            right: -20px;
+            width: 80px;
+            height: 160%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="25" fill="%23ffd93d" opacity="0.4"/></svg>');
+            transform: rotate(20deg);
+        }
+
+        .main-banner h1 {
+            font-size: 3.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        .main-banner h2 {
+            font-size: 2.5rem;
+            font-weight: bold;
+            position: relative;
+            z-index: 1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 40px;
+        }
+
+        .form-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .cart-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            height: fit-content;
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #8B3A9C;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #8B3A9C;
+            padding-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+            font-size: 0.9rem;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #8B3A9C;
+            box-shadow: 0 0 0 3px rgba(139, 58, 156, 0.1);
+        }
+
+        .required {
+            color: #e74c3c;
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+        .item-image {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, #8B3A9C, #FF6B9D);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-right: 15px;
+            font-size: 0.8rem;
+        }
+
+        .item-details {
+            flex: 1;
+        }
+
+        .item-name {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .item-size {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .item-quantity {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0;
+        }
+
+        .qty-btn {
+            background: #8B3A9C;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .qty-btn:hover {
+            background: #6B2C7A;
+        }
+
+        .item-price {
+            font-weight: bold;
+            color: #8B3A9C;
+            font-size: 1.1rem;
+        }
+
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+            padding: 5px 0;
+        }
+
+        .price-row.total {
+            border-top: 2px solid #8B3A9C;
+            padding-top: 15px;
+            margin-top: 20px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: #8B3A9C;
+        }
+
+        .security-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #27ae60;
+            font-size: 0.9rem;
+            margin: 15px 0;
+        }
+
+        .delivery-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .delivery-option {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .delivery-option:hover {
+            border-color: #8B3A9C;
+        }
+
+        .delivery-option.selected {
+            border-color: #8B3A9C;
+            background: rgba(139, 58, 156, 0.05);
+        }
+
+        .delivery-option input[type="radio"] {
+            margin-right: 12px;
+            width: auto;
+        }
+
+        .cep-search {
+            display: flex;
+            gap: 10px;
+            align-items: end;
+        }
+
+        .cep-search button {
+            background: #8B3A9C;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.3s ease;
+        }
+
+        .cep-search button:hover {
+            background: #6B2C7A;
+        }
+
+        .payment-methods {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .payment-method {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .payment-method:hover {
+            border-color: #8B3A9C;
+        }
+
+        .payment-method.selected {
+            border-color: #8B3A9C;
+            background: rgba(139, 58, 156, 0.05);
+            color: #8B3A9C;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            background: linear-gradient(45deg, #8B3A9C, #FF6B9D);
+            color: white;
+            border: none;
+            padding: 18px;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .checkout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(139, 58, 156, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                padding: 20px 15px;
+            }
+            
+            .main-banner h1 {
+                font-size: 2.5rem;
+            }
+            
+            .main-banner h2 {
+                font-size: 1.8rem;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header-banner">
+        🍓 Aceitamos cartão, Pix e dinheiro. Entregamos o melhor açaí da cidade! 🥥
+    </div>
+
+    <div class="main-banner">
+        <h1>SEU AÇAÍ ESTÁ QUASE PRONTO...</h1>
+        <h2>FINALIZE SUA COMPRA!</h2>
+    </div>
+
+    <div class="container">
+        <div class="form-section">
+            <h3 class="section-title">📋 Identificação</h3>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>E-mail <span class="required">*</span></label>
+                    <input type="email" id="email" placeholder="seu@email.com">
+                </div>
+                <div class="form-group">
+                    <label>Telefone <span class="required">*</span></label>
+                    <input type="tel" id="phone" placeholder="(11) 99999-9999">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Nome completo <span class="required">*</span></label>
+                    <input type="text" id="name" placeholder="Seu nome completo">
+                </div>
+                <div class="form-group">
+                    <label>CPF <span class="required">*</span></label>
+                    <input type="text" id="cpf" placeholder="000.000.000-00">
+                </div>
+            </div>
+
+            <h3 class="section-title">🚚 Entrega</h3>
+            
+            <div class="delivery-section">
+                <p><strong>Como gostaria de receber o pedido?</strong> <a href="#" style="color: #8B3A9C;">Alterar</a></p>
+                
+                <div class="form-group">
+                    <label>CEP <span class="required">*</span></label>
+                    <div class="cep-search">
+                        <input type="text" id="cep" placeholder="00000-000" maxlength="9">
+                        <button type="button" onclick="searchCEP()">Buscar</button>
+                    </div>
+                </div>
+
+                <div id="addressFields" style="display: none;">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Rua <span class="required">*</span></label>
+                            <input type="text" id="street" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>Número <span class="required">*</span></label>
+                            <input type="text" id="number" placeholder="123">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Bairro</label>
+                            <input type="text" id="neighborhood" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>Cidade</label>
+                            <input type="text" id="city" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Complemento</label>
+                        <input type="text" id="complement" placeholder="Apartamento, bloco, etc. (opcional)">
+                    </div>
+                </div>
+
+                <div class="delivery-info" style="background: linear-gradient(45deg, #27ae60, #2ecc71); color: white; padding: 20px; border-radius: 10px; text-align: center; margin: 15px 0;">
+                    <h4 style="margin: 0 0 10px 0; font-size: 1.2rem;">🚚 Entrega Grátis!</h4>
+                    <p style="margin: 0; opacity: 0.9;">Entregamos seu açaí fresquinho em 30-45 minutos</p>
+                </div>
+            </div>
+
+            <h3 class="section-title">💳 Pagamento</h3>
+            
+            <div class="pix-section">
+                <div style="background: linear-gradient(45deg, #32BCAD, #00D4AA); color: white; padding: 20px; border-radius: 10px; text-align: center; margin: 20px 0;">
+                    <h4 style="margin: 0 0 10px 0; font-size: 1.3rem;">📱 Pagamento via PIX</h4>
+                    <p style="margin: 0; opacity: 0.9;">Pagamento rápido, seguro e sem taxas!</p>
+                </div>
+                
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; border-left: 4px solid #32BCAD;">
+                    <p style="margin: 0 0 10px 0; font-weight: 600; color: #333;">
+                        ✅ Como funciona:
+                    </p>
+                    <ol style="margin: 0; padding-left: 20px; color: #666;">
+                        <li>Clique em "Finalizar Pedido"</li>
+                        <li>Aparecerá o QR Code e link do PIX</li>
+                        <li>Faça o pagamento pelo seu banco</li>
+                        <li>Seu pedido será preparado automaticamente!</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <div class="cart-section">
+            <h3 class="section-title">🛒 Seu carrinho</h3>
+            
+            <div class="cart-item">
+                <div class="item-image">AÇAÍ</div>
+                <div class="item-details">
+                    <div class="item-name">Açaí Premium 500ml</div>
+                    <div class="item-size">Com granola, banana e leite condensado</div>
+                    <div class="item-quantity">
+                        <button class="qty-btn" onclick="changeQty('item1', -1)">-</button>
+                        <span id="qty1">2</span>
+                        <button class="qty-btn" onclick="changeQty('item1', 1)">+</button>
+                    </div>
+                </div>
+                <div class="item-price">R$ 32,00</div>
+            </div>
+
+            <div class="cart-item">
+                <div class="item-image">BOWL</div>
+                <div class="item-details">
+                    <div class="item-name">Bowl de Açaí 700ml</div>
+                    <div class="item-size">Com frutas vermelhas e castanhas</div>
+                    <div class="item-quantity">
+                        <button class="qty-btn" onclick="changeQty('item2', -1)">-</button>
+                        <span id="qty2">1</span>
+                        <button class="qty-btn" onclick="changeQty('item2', 1)">+</button>
+                    </div>
+                </div>
+                <div class="item-price">R$ 22,90</div>
+            </div>
+
+            <div class="price-row">
+                <span>Subtotal:</span>
+                <span>R$ 54,90</span>
+            </div>
+            
+            <div class="price-row">
+                <span>Entrega:</span>
+                <span style="color: #27ae60;">Grátis</span>
+            </div>
+            
+            <div class="price-row">
+                <span>Desconto:</span>
+                <span style="color: #27ae60;">-R$ 0,00</span>
+            </div>
+            
+            <div class="price-row total">
+                <span>Total:</span>
+                <span id="totalPrice">R$ 54,90</span>
+            </div>
+
+            <div class="security-badge">
+                <span>🔒</span>
+                <span>Ambiente seguro</span>
+            </div>
+
+            <button class="checkout-btn" onclick="finalizePurchase()">
+                📱 FINALIZAR PEDIDO
+            </button>
+
+            <!-- Modal PIX -->
+            <div id="pixModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center;">
+                <div style="background: white; border-radius: 15px; padding: 30px; max-width: 400px; width: 90%; text-align: center; position: relative;">
+                    <button onclick="closePixModal()" style="position: absolute; top: 15px; right: 20px; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #666;">×</button>
+                    
+                    <h3 style="color: #8B3A9C; margin-bottom: 20px;">💳 Pagamento PIX</h3>
+                    
+                    <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                        <p><strong>Total a pagar:</strong></p>
+                        <p style="font-size: 1.5rem; color: #8B3A9C; font-weight: bold;" id="pixTotal">R$ 54,90</p>
+                    </div>
+
+                    <!-- QR Code -->
+                    <div style="background: white; padding: 20px; border: 2px dashed #32BCAD; border-radius: 10px; margin: 20px 0;">
+                        <div style="width: 200px; height: 200px; background: #f0f0f0; margin: 0 auto; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 3rem;">
+                            📱
+                        </div>
+                        <p style="margin: 15px 0 5px 0; font-weight: 600;">Escaneie o QR Code</p>
+                        <p style="font-size: 0.9rem; color: #666;">Abra o app do seu banco e escaneie</p>
+                    </div>
+
+                    <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin: 20px 0;">
+                        <p style="font-weight: 600; margin-bottom: 10px;">Ou copie a chave PIX:</p>
+                        <div style="background: white; padding: 12px; border-radius: 5px; border: 1px solid #ddd; word-break: break-all; font-family: monospace; font-size: 0.85rem;" id="pixKey">
+                            00020126330014BR.GOV.BCB.PIX0111123456789012345@acai.com.br5204000053039865802BR5925ACAI PREMIUM DELIVERY6009SAO PAULO62070503***6304ABCD
+                        </div>
+                        <button onclick="copyPixKey()" style="background: #32BCAD; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; margin-top: 10px; font-size: 0.9rem;">
+                            📋 Copiar Chave
+                        </button>
+                    </div>
+
+                    <div style="background: linear-gradient(45deg, #32BCAD, #00D4AA); color: white; padding: 15px; border-radius: 8px; margin-top: 20px;">
+                        <p style="margin: 0; font-weight: 600;">⏱️ Após o pagamento</p>
+                        <p style="margin: 5px 0 0 0; font-size: 0.9rem; opacity: 0.9;">Seu açaí será preparado automaticamente em 30-45 minutos!</p>
+                    </div>
+                </div>
+            </div>
+
+            <p style="text-align: center; font-size: 0.8rem; color: #666; margin-top: 15px;">
+                Ao finalizar, você concorda com nossos termos de uso
+            </p>
+        </div>
+    </div>
+
+    <script>
+        let quantities = {
+            item1: 2,
+            item2: 1
+        };
+
+        let prices = {
+            item1: 16.00,
+            item2: 22.90
+        };
+
+        function changeQty(item, change) {
+            quantities[item] += change;
+            if (quantities[item] < 1) quantities[item] = 1;
+            
+            document.getElementById(item === 'item1' ? 'qty1' : 'qty2').textContent = quantities[item];
+            updatePrices();
+        }
+
+        function updatePrices() {
+            let subtotal = (quantities.item1 * prices.item1) + (quantities.item2 * prices.item2);
+            let total = subtotal; // Entrega grátis
+
+            document.querySelector('.price-row:first-of-type span:last-child').textContent = `R$ ${subtotal.toFixed(2).replace('.', ',')}`;
+            document.getElementById('totalPrice').textContent = `R$ ${total.toFixed(2).replace('.', ',')}`;
+        }
+
+        function searchCEP() {
+            const cep = document.getElementById('cep').value.replace(/\D/g, '');
+            
+            if (cep.length !== 8) {
+                alert('Por favor, insira um CEP válido com 8 dígitos.');
+                return;
+            }
+
+            // Simula busca de CEP - você pode integrar com a API dos Correios ou ViaCEP
+            fetch(`https://viacep.com.br/ws/${cep}/json/`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.erro) {
+                        alert('CEP não encontrado. Verifique o número digitado.');
+                        return;
+                    }
+
+                    // Preenche os campos com os dados do endereço
+                    document.getElementById('street').value = data.logradouro;
+                    document.getElementById('neighborhood').value = data.bairro;
+                    document.getElementById('city').value = `${data.localidade} - ${data.uf}`;
+                    
+                    // Mostra os campos de endereço
+                    document.getElementById('addressFields').style.display = 'block';
+                    
+                    // Foca no campo número
+                    document.getElementById('number').focus();
+                    
+                    alert('✅ Endereço encontrado! Complete com o número da sua casa/apartamento.');
+                })
+                .catch(error => {
+                    console.error('Erro ao buscar CEP:', error);
+                    alert('Erro ao buscar o CEP. Tente novamente.');
+                });
+        }
+
+        // Máscara para CEP
+        document.getElementById('cep').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 5) {
+                value = value.slice(0, 5) + '-' + value.slice(5, 8);
+            }
+            e.target.value = value;
+        });
+
+        function finalizePurchase() {
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const name = document.getElementById('name').value;
+            const cep = document.getElementById('cep').value;
+            const number = document.getElementById('number').value;
+            
+            if (!email || !phone || !name || !cep || !number) {
+                alert('Por favor, preencha todos os campos obrigatórios.');
+                return;
+            }
+            
+            // Atualiza o valor total no modal PIX
+            const total = (quantities.item1 * prices.item1) + (quantities.item2 * prices.item2);
+            document.getElementById('pixTotal').textContent = `R$ ${total.toFixed(2).replace('.', ',')}`;
+            
+            // Mostra o modal PIX
+            document.getElementById('pixModal').style.display = 'flex';
+        }
+
+        function closePixModal() {
+            document.getElementById('pixModal').style.display = 'none';
+        }
+
+        function copyPixKey() {
+            const pixKey = document.getElementById('pixKey').textContent;
+            navigator.clipboard.writeText(pixKey).then(() => {
+                alert('✅ Chave PIX copiada!\n\nCole no seu app do banco para fazer o pagamento.');
+            }).catch(() => {
+                // Fallback para navegadores que não suportam clipboard API
+                const textArea = document.createElement('textarea');
+                textArea.value = pixKey;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                alert('✅ Chave PIX copiada!\n\nCole no seu app do banco para fazer o pagamento.');
+            });
+        }
+
+        // Fechar modal clicando fora dele
+        document.getElementById('pixModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closePixModal();
+            }
+        });
+
+        // Event listeners for delivery options - removido pois só tem uma opção agora
+
+        // Initialize prices
+        updatePrices();
+    </script>
+</body>
+</html>
